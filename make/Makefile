@@ -82,7 +82,16 @@ ICON_DIR			= $(SOURCE_DIR)/image
 IDL2RPC_CALL 			= idl2rpc.pl
 #
 #######################################################################
-
+#######################################################################
+# Determine the number cores of the machine, where the makefile is executed.
+# This helps to set the -j option (from make), to speedup the build
+# process of 'large' projects.  
+NPROCS=1
+OS:=$(shell uname -s)
+ifeq ($(OS),Linux)
+    NPROCS:=$(shell grep -c ^processor /proc/cpuinfo) 
+endif
+#######################################################################
 
 #######################################################################
 # c++ - compiler settings
@@ -142,7 +151,7 @@ touch:
 
 build: mrproper depend 
 	# after generating the dependencies it is necessary to call make again
-	make all 
+	make -j$(NPROCS) all 
 
 
 clean:
