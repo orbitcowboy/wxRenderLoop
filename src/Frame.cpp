@@ -13,9 +13,9 @@ END_EVENT_TABLE()
 
 MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     : wxFrame(frame, -1, title)
-    , m_pMenubar(NULL)
-    , m_pFileMenu(NULL)
-    , m_pHelpMenu(NULL)
+    , m_menuBar(NULL)
+    , m_fileMenu(NULL)
+    , m_helpMenu(NULL)
 {
     // set up the menu bar
     vSetUpMenuBar();
@@ -24,7 +24,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     vSetUpStatusBar();
 
     // create a panel to place all the controls
-    m_pPanel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(600, 600));
+    m_panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(600, 600));
 
     // set the window size
     this->SetSize(300, 150);
@@ -60,20 +60,20 @@ void MyFrame::vOnButton(wxCommandEvent &event)
 void MyFrame::vSetUpMenuBar(void)
 {
 #if wxUSE_MENUS
-    m_pMenubar = new wxMenuBar();
+    m_menuBar = new wxMenuBar();
 
     // set up the file menu
-    m_pFileMenu = new wxMenu(_T(""));
-    m_pFileMenu->Append(ID_QUIT, _("&Quit\tAlt-F4"), _("Quit the application"));
-    m_pMenubar->Append(m_pFileMenu, _("&File"));
+    m_fileMenu = new wxMenu(_T(""));
+    m_fileMenu->Append(ID_QUIT, _("&Quit\tAlt-F4"), _("Quit the application"));
+    m_menuBar->Append(m_fileMenu, _("&File"));
 
     // set up the help menu
-    m_pHelpMenu = new wxMenu(_T(""));
-    m_pHelpMenu->Append(ID_ABOUT, _("&About\tF1"), _("Show info about this application"));
-    m_pMenubar->Append(m_pHelpMenu, _("&Help"));
+    m_helpMenu = new wxMenu(_T(""));
+    m_helpMenu->Append(ID_ABOUT, _("&About\tF1"), _("Show info about this application"));
+    m_menuBar->Append(m_helpMenu, _("&Help"));
 
     // realize the menu(send it to the window)
-    SetMenuBar(m_pMenubar);
+    SetMenuBar(m_menuBar);
 #endif // wxUSE_MENUS
 }
 
