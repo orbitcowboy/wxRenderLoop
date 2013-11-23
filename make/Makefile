@@ -23,6 +23,7 @@ MAKE_DIR 			= ../make
 BIN_DIR 			= ../bin
 CONFIG_DIR			= ../config
 ICON_DIR			= $(SOURCE_DIR)/image
+APP_NAME			= wxTemplate
 
 #######################################################################
 # Determine the number cores of the machine, where the makefile is 
@@ -63,13 +64,13 @@ LINKER_FLAGS 			= `wx-config --libs adv,core,base,aui --version=2.8 --unicode=ye
 LINKER_CALL 			= $(LINKER) -o $@ $^ $(LINKER_FLAGS)
 
 # Targets
-all: $(BIN_DIR)/wxTemplate
+all: $(BIN_DIR)/$(APP_NAME)
 
 # ============================================================
 # LINKER-RULES
 # ===========================================================
-../bin/wxTemplate : $(OBJECT_DIR)/Application.o\
-                    $(OBJECT_DIR)/Frame.o
+$(BIN_DIR)/$(APP_NAME) : $(OBJECT_DIR)/Application.o\
+						 $(OBJECT_DIR)/Frame.o
 	    
 	$(LINKER_CALL)
 # 
@@ -94,7 +95,7 @@ build: mrproper depend
 
 
 clean:
-	rm -f $(BIN_DIR)/*
+	rm -f $(BIN_DIR)/$(APP_NAME)
 	rm -f $(OBJECT_DIR)/*
 	rm -f $(SOURCE_DIR)/*.orig
 	rm -f $(SOURCE_DIR)/*.bck
