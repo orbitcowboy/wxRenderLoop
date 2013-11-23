@@ -39,10 +39,10 @@ class MyFrame: public wxFrame
         void vSetUpMenuBar  (void);
         void vSetUpStatusBar(void);
 
-        wxPanel     *m_pPanel;
-        wxMenuBar   *m_pMenubar;
-        wxMenu      *m_pFileMenu;
-        wxMenu      *m_pHelpMenu;
+        wxPanel * m_pPanel;
+        wxMenuBar * m_pMenubar;
+        wxMenu * m_pFileMenu;
+        wxMenu * m_pHelpMenu;
 
         DECLARE_EVENT_TABLE()
 };

@@ -24,7 +24,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     vSetUpStatusBar();
 
     // create a panel to place all the controls
-    m_pPanel    = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(600, 600));
+    m_pPanel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(600, 600));
 
     // set the window size
     this->SetSize(300, 150);
@@ -60,7 +60,6 @@ void MyFrame::vOnButton(wxCommandEvent &event)
 void MyFrame::vSetUpMenuBar(void)
 {
 #if wxUSE_MENUS
-
     m_pMenubar = new wxMenuBar();
 
     // set up the file menu
@@ -73,20 +72,17 @@ void MyFrame::vSetUpMenuBar(void)
     m_pHelpMenu->Append(ID_ABOUT, _("&About\tF1"), _("Show info about this application"));
     m_pMenubar->Append(m_pHelpMenu, _("&Help"));
 
-    // realize the menu( send it to the window)
+    // realize the menu(send it to the window)
     SetMenuBar(m_pMenubar);
-
 #endif // wxUSE_MENUS
 }
 
 void MyFrame::vSetUpStatusBar(void)
 {
-
 #if wxUSE_STATUSBAR
     // create a status bar with some information about the used wxWidgets version
     CreateStatusBar(2);
     SetStatusText(_("Hello user !"), 0);
     SetStatusText(wxVERSION_STRING, 1);
 #endif // wxUSE_STATUSBAR   
-
 }
