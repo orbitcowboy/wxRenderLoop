@@ -5,8 +5,8 @@
 #* Author: Martin Ettl (ettl[dot]martin78[AT]gmail[dot]com)            *
 #* Date  : 2013-11-26                                                  *
 #*                                                                     *
-#* LINUX-Makefile (gmake): Ubuntu linux                                *
-#* Makefile to compile and build all necessary programms.              *
+#* LINUX-Makefile (gmake): Ubuntu Linux                                *
+#* A makefile to compile wxWidgets programms.              		   	   *
 #*                                                                     *
 #* Usage and basic features:                                           *
 #*                                                                     *
