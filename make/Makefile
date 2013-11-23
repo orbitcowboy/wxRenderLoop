@@ -49,7 +49,8 @@ WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,bas
 CXX 		= g++
 CXX_OPT		= -O2 
 CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST) 
-CXX_WFLAGS  = -W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing
+CXX_WFLAGS  = -W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
+			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing
 CXXFLAGS 	= $(WXCONFIG_CALL)\
 			  $(CXX_WFLAGS)\
 			  $(CXX_INCLUDE)\
@@ -62,7 +63,7 @@ CC	        = gcc
 CC_INCLUDE  = 
 CC_OPT      = -O2
 CC_WFLAGS   = -W -Wall -Wunused -Wextra -Wconversion -ansi -pedantic
-CFLAGS 	    = $(WXCONFIG_CALL)-I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS)
+CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS)
 CC_CALL     = $(CC) -c $(CFLAGS) -o $@ $< 
 
 # ----------------------------------------------------------------------
@@ -98,7 +99,6 @@ touch:
 build: mrproper depend 
 	# after generating the dependencies it is necessary to call make again
 	/usr/bin/make -j$(NPROCS) all 
-
 
 clean:
 	/bin/rm -f $(BIN_DIR)/$(APP_NAME)
