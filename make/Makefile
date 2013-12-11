@@ -19,7 +19,7 @@
 # ----------------------------------------------------------------------
 # Path settings:
 SRC_DIR				= ../src
-SRC_EXT_DIR         = ../src-ext
+SRC_EXT_DIR         = ../srcext
 SRC_TEST            = ../src-test
 OBJ_DIR				= ../obj
 MAKE_DIR 			= ../make
