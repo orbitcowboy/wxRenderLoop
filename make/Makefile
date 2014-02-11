@@ -40,7 +40,7 @@ endif
 
 # ----------------------------------------------------------------------
 # Configure wxWidgets build
-WXVERSION = 2.8
+WXVERSION = 3.1
 WXCONFIG_CALL = `wx-config --cxxflags --unicode=yes --version=$(WXVERSION)`
 WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,base,html,richtext,xml`
 
@@ -48,13 +48,15 @@ WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,bas
 # C++ compiler settings:
 CXX 		= g++
 CXX_OPT		= -O2 
+CXX_DEBUG   = -fsanitize=address
 CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST) 
 CXX_WFLAGS  = -W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
 			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing
 CXXFLAGS 	= $(WXCONFIG_CALL)\
 			  $(CXX_WFLAGS)\
 			  $(CXX_INCLUDE)\
-			  $(CXX_OPT)
+			  $(CXX_OPT)\
+			  $(CXX_DEBUG)
 CXX_CALL    = $(CXX) -c $(CXXFLAGS) -o $@ $< 
 
 # ----------------------------------------------------------------------
@@ -62,14 +64,15 @@ CXX_CALL    = $(CXX) -c $(CXXFLAGS) -o $@ $<
 CC	        = gcc
 CC_INCLUDE  = 
 CC_OPT      = -O2
+CC_DEBUG	= -fsanitize=address
 CC_WFLAGS   = -W -Wall -Wunused -Wextra -Wconversion -ansi -pedantic
-CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS)
+CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS) $(CC_DEBUG)
 CC_CALL     = $(CC) -c $(CFLAGS) -o $@ $< 
 
 # ----------------------------------------------------------------------
 # Linker settings:
 LINKER      = $(CXX) 
-LDFLAGS     = $(WXCONFIG_LINKER_CALL) 
+LDFLAGS     = $(WXCONFIG_LINKER_CALL) -fsanitize=address
 LINKER_CALL = $(LINKER) -o $@ $^ $(LDFLAGS)
 
 # Targets

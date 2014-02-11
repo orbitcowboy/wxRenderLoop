@@ -12,9 +12,7 @@ IMPLEMENT_APP(MyApp)
 // initialize the frame
 bool MyApp::OnInit()
 {
-
     MyFrame* const pFrame = new MyFrame(0L, _("wxWidgets::wxTemplate"));
-
     pFrame->Show();
     return true;
 }
