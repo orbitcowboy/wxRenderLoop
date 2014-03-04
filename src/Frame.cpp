@@ -41,7 +41,6 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxAboutDialogInfo AboutDialogInfo;
     AboutDialogInfo.AddDeveloper(wxT("Dr. rer. nat. Martin Ettl"));
-    AboutDialogInfo.SetDescription(wxT("wxWidgets minimal demo\nby\nDr. rer. nat. Martin Ettl"));
     AboutDialogInfo.SetName(wxT("wxTemplate"));
     AboutDialogInfo.SetVersion(wxT(__DATE__));
     wxAboutBox(AboutDialogInfo);
@@ -82,7 +81,7 @@ void MyFrame::vSetUpStatusBar(void)
 #if wxUSE_STATUSBAR
     // create a status bar with some information about the used wxWidgets version
     CreateStatusBar(2);
-    SetStatusText(_("Hello user !"), 0);
+    SetStatusText(wxEmptyString, 0);
     SetStatusText(wxVERSION_STRING, 1);
 #endif // wxUSE_STATUSBAR   
 }
