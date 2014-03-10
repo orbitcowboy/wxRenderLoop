@@ -1,23 +1,23 @@
 #***********************************************************************
 #* Description:                                                        *
 #* ------------                                                        *
+#* $Rev: 508 $     Revision of last commit                             *
+#* $Author: ettl $  Author of last commit                              *
+#* $Date: 2014-03-06 15:03:17 +0100 (Thu, 06 Mar 2014) $               *
 #*                                                                     *
-#* Author: Martin Ettl (ettl[dot]martin78[AT]gmail[dot]com)            *
-#* Date  : 2013-11-26                                                  *
-#*                                                                     *
-#* LINUX-Makefile (gmake): Ubuntu Linux                                *
-#* A makefile to compile wxWidgets programms.              		   	   *
+#* Tested on Ubuntu Linux and Raspberry Pi (Raspbian)       		   *
+#* Makefile to compile and build programs.               			   *
 #*                                                                     *
 #* Usage and basic features:                                           *
 #*                                                                     *
 #*  - make build  [creates the whole project]                          *
 #*  - make clean  [removes all object and binary files]                *
 #*  - make depend [detects header dependencies]                        *
+#*  - make style  [formates the source, based on artistic style]       *
 #*                                                                     *
 #***********************************************************************
 
-# ----------------------------------------------------------------------
-# Path settings:
+# Folder definitions
 SRC_DIR				= ../src
 SRC_EXT_DIR         = ../srcext
 SRC_TEST            = ../src-test
@@ -33,9 +33,15 @@ APP_NAME			= wxTemplate
 # executed. This sets the -j option (from make), to speedup the 
 # build process of 'large' projects.  
 NPROCS=1
-OS:=$(shell uname -s)
-ifeq ($(OS),Linux)
-    NPROCS:=$(shell grep -c ^processor /proc/cpuinfo) 
+OS_TYPE:=$(shell uname -s)
+OS_NAME:=$(shell uname -n)
+ifeq ($(OS_TYPE),Linux)
+	ifneq ($(OS_NAME),raspberrypi)
+		NPROCS_TMP:=$(shell grep -c ^processor /proc/cpuinfo) 
+		ifneq ($(NPROCS_TMP),0)
+			NPROCS:=$(NPROCS_TMP)
+		endif
+	endif
 endif
 
 # ----------------------------------------------------------------------
@@ -45,34 +51,36 @@ WXCONFIG_CALL = `wx-config --cxxflags --unicode=yes --version=$(WXVERSION)`
 WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,base,html,richtext,xml`
 
 # ----------------------------------------------------------------------
+# To compile with address sanitizer, compile with ASAN=yes
+ifdef ASAN
+	SANITIZE=-fsanitize=address 
+endif 
+
+# ----------------------------------------------------------------------
 # C++ compiler settings:
 CXX 		= g++
-CXX_OPT		= -O2 
-CXX_DEBUG   = -fsanitize=address
-CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST) 
-CXX_WFLAGS  = -W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
-			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing
-CXXFLAGS 	= $(WXCONFIG_CALL)\
-			  $(CXX_WFLAGS)\
-			  $(CXX_INCLUDE)\
-			  $(CXX_OPT)\
-			  $(CXX_DEBUG)
+CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST)
+CXX_OPT		= -O3
+CXX_DEBUG	= $(SANITIZE)
+CXX_WFLAGS	= -Wno-write-strings #-W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
+			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing 
+CXXFLAGS 	= $(WXCONFIG_CALL) $(CXX_WFLAGS) $(CXX_DEBUG) $(CXX_INCLUDE) $(CXX_OPT)
 CXX_CALL    = $(CXX) -c $(CXXFLAGS) -o $@ $< 
 
 # ----------------------------------------------------------------------
 # C compiler settings:
 CC	        = gcc
 CC_INCLUDE  = 
-CC_OPT      = -O2
-CC_DEBUG	= -fsanitize=address
+CC_DEBUG	= $(SANITIZE)
+CC_OPT      = -O3
 CC_WFLAGS   = -W -Wall -Wunused -Wextra -Wconversion -ansi -pedantic
-CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS) $(CC_DEBUG)
+CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS)
 CC_CALL     = $(CC) -c $(CFLAGS) -o $@ $< 
 
 # ----------------------------------------------------------------------
 # Linker settings:
 LINKER      = $(CXX) 
-LDFLAGS     = $(WXCONFIG_LINKER_CALL) -fsanitize=address
+LDFLAGS     = $(WXCONFIG_LINKER_CALL) $(SANITIZE)
 LINKER_CALL = $(LINKER) -o $@ $^ $(LDFLAGS)
 
 # Targets
@@ -105,7 +113,7 @@ build: mrproper depend
 
 clean:
 	/bin/rm -f $(BIN_DIR)/$(APP_NAME)
-	/bin/rm -f $(OBJ_DIR)/*
+	/bin/rm -f $(OBJ_DIR)/*.o
 	/bin/rm -f $(SRC_DIR)/*.orig
 	/bin/rm -f $(SRC_DIR)/*.bck
 	/bin/rm -f $(MAKE_DIR)/.Makefile*
