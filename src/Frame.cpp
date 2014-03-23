@@ -30,7 +30,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     this->SetSize(300, 150);
 }
 
-MyFrame::~MyFrame() {}
+MyFrame::~MyFrame(void) {}
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
