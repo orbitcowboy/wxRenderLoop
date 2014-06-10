@@ -55,7 +55,10 @@ WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,bas
 ifdef ASAN
 	SANITIZE=-fsanitize=address 
 endif 
-
+# To compile with undefined sanitizer, compile with USAN=yes
+ifdef USAN
+	SANITIZE+=-fsanitize=undefined 
+endif
 # ----------------------------------------------------------------------
 # C++ compiler settings:
 CXX 		= g++
