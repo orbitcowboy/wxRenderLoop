@@ -25,7 +25,7 @@ OBJ_DIR				= ../obj
 MAKE_DIR 			= ../make
 BIN_DIR 			= ../bin
 CONFIG_DIR			= ../config
-ICON_DIR			= $(SOURCE_DIR)/image
+ICON_DIR			= $(SRC_DIR)/image
 APP_NAME			= wxTemplate
 
 # ----------------------------------------------------------------------
@@ -62,7 +62,7 @@ endif
 # ----------------------------------------------------------------------
 # C++ compiler settings:
 CXX 		= g++
-CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST)
+CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST) -I$(ICON_DIR)
 CXX_OPT		= -O3
 CXX_DEBUG	= $(SANITIZE)
 CXX_WFLAGS	= -Wno-write-strings #-W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
