@@ -1,16 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "startwx-project", "startwx-project.vcxproj", "{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_static|Win32 = Debug_static|Win32
 		Debug|Win32 = Debug|Win32
+		Release_static|Win32 = Release_static|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Debug_static|Win32.ActiveCfg = Debug_static|Win32
+		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Debug_static|Win32.Build.0 = Debug_static|Win32
 		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Debug|Win32.Build.0 = Debug|Win32
+		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Release_static|Win32.ActiveCfg = Release_static|Win32
+		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Release_static|Win32.Build.0 = Release_static|Win32
 		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Release|Win32.ActiveCfg = Release|Win32
 		{CA90132F-F4A7-4F02-A26F-23C1F5A08F56}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
