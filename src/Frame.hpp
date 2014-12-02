@@ -31,7 +31,7 @@ class MyFrame: public wxFrame
         // ---------------
         void OnQuit   (wxCommandEvent& );
         void OnAbout  (wxCommandEvent& );
-        void vOnButton(wxCommandEvent& );
+        void OnButton(wxCommandEvent& );
 
         // -----------------
         // Helper functions:

@@ -9,6 +9,7 @@
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_MENU(ID_QUIT            , MyFrame::OnQuit)
     EVT_MENU(ID_ABOUT           , MyFrame::OnAbout)
+    //    EVENT_BUTTON(SOME_ID           , MyFrame::OnButton)
 END_EVENT_TABLE()
 
 MyFrame::MyFrame(wxFrame *frame, const wxString& title)
@@ -17,16 +18,24 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     , m_fileMenu(NULL)
     , m_helpMenu(NULL)
 {
+    // set default size hints
+    this->SetSizeHints(wxDefaultSize, wxDefaultSize);
+
     // set up the menu bar
     vSetUpMenuBar();
 
     // set up the status bar
     vSetUpStatusBar();
 
+    wxBoxSizer* boxSizer = new wxBoxSizer( wxVERTICAL );
     // create a panel to place all the controls
     m_panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(600, 600));
-
-    // set the window size
+    boxSizer->Add(m_panel, 1, wxALL | wxEXPAND, 5);
+    // set the sizer
+    this->SetSizer( boxSizer );
+    // force layout
+    this->Layout();
+    // set default window size
     this->SetSize(300, 150);
 }
 
@@ -46,12 +55,21 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
     wxAboutBox(AboutDialogInfo);
 }
 
-void MyFrame::vOnButton(wxCommandEvent &event)
+void MyFrame::OnButton(wxCommandEvent &event)
 {
     switch(event.GetId())
     {
-        default:
+        /*
+        case SOME_ID:
+        {
             break;
+        }
+        */
+        default:
+        {
+            // unknown id
+            break;
+        }
     }
     return;
 }
