@@ -1,6 +1,6 @@
 // --------------------------
-/// @author ettl martin
-/// @date   2013-11-26
+/// @author Dr. Martin Ettl
+/// @date   2014-12-03
 // --------------------------
 #ifndef MAIN_H
 #define MAIN_H
@@ -16,7 +16,7 @@ class MyFrame: public wxFrame
         enum wxIDs
         {
             ID_ABOUT = wxID_HIGHEST
-                       , ID_QUIT
+            , ID_QUIT
         };
 
     public:

@@ -1,6 +1,6 @@
 // --------------------------
-/// @author ettl martin
-/// @date   2013-11-26
+/// @author Dr. Martin Ettl
+/// @date   2014-12-03
 // --------------------------
 #include "Frame.hpp"
 #include <wx/textdlg.h>
@@ -41,7 +41,7 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxAboutDialogInfo AboutDialogInfo;
     AboutDialogInfo.AddDeveloper(wxT("Dr. rer. nat. Martin Ettl"));
-    AboutDialogInfo.SetName(wxT("wxTemplate"));
+    AboutDialogInfo.SetName(this->GetTitle());
     AboutDialogInfo.SetVersion(wxT(__DATE__));
     wxAboutBox(AboutDialogInfo);
 }

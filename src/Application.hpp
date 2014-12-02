@@ -1,6 +1,6 @@
 // --------------------------
-/// @author ettl martin
-/// @date   2013-11-26
+/// @author Dr. Martin Ettl
+/// @date   2014-12-03
 // --------------------------
 
 #ifndef APP_H
