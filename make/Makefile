@@ -5,8 +5,8 @@
 #* $Author: ettl $  Author of last commit                              *
 #* $Date: 2014-03-06 15:03:17 +0100 (Thu, 06 Mar 2014) $               *
 #*                                                                     *
-#* Tested on Ubuntu Linux and Raspberry Pi (Raspbian)       		   *
-#* Makefile to compile and build programs.               			   *
+#* Tested on Ubuntu Linux and Raspberry Pi (Raspbian)       	       *
+#* Makefile to compile and build programs.               	       *
 #*                                                                     *
 #* Usage and basic features:                                           *
 #*                                                                     *
