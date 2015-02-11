@@ -10,13 +10,14 @@
 #include <wx/textctrl.h>
 #include <wx/notebook.h>
 #include <wx/aboutdlg.h>
+#include <wx/config.h>
 
 class MyFrame: public wxFrame
 {
         enum wxIDs
         {
             ID_ABOUT = wxID_HIGHEST
-            , ID_QUIT
+                       , ID_QUIT
         };
 
     public:
@@ -26,23 +27,30 @@ class MyFrame: public wxFrame
 
     private:
 
-        // ---------------
-        // Event Handler :
-        // ---------------
+        // Event handler, which is called when the program terminates.
         void OnQuit   (wxCommandEvent& );
+        // Event handler, which is called when F1-key is pressed.
         void OnAbout  (wxCommandEvent& );
-        void OnButton(wxCommandEvent& );
+        // Event handler, which is called when a button is pressed.
+        void OnButton (wxCommandEvent& );
 
-        // -----------------
-        // Helper functions:
-        // -----------------
-        void vSetUpMenuBar  (void);
-        void vSetUpStatusBar(void);
+        // Save the current program settings using wxConfig.
+        void SaveCurrentProgramSettings(void);
+
+        // Restore the current program settings using wxConfig.
+        void RestoreCurrentProgramSettings(void);
+
+        // A helper function to set up the menu bar.
+        void SetUpMenuBar  (void);
+        // A helper function to set up the status bar.
+        void SetUpStatusBar(void);
+
 
         wxPanel * m_panel;
         wxMenuBar * m_menuBar;
         wxMenu * m_fileMenu;
         wxMenu * m_helpMenu;
+        wxConfig * m_config;
 
         DECLARE_EVENT_TABLE()
 };

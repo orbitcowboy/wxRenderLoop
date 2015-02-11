@@ -9,7 +9,7 @@
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_MENU(ID_QUIT            , MyFrame::OnQuit)
     EVT_MENU(ID_ABOUT           , MyFrame::OnAbout)
-    //    EVENT_BUTTON(SOME_ID           , MyFrame::OnButton)
+    //EVENT_BUTTON(SOME_ID           , MyFrame::OnButton)
 END_EVENT_TABLE()
 
 MyFrame::MyFrame(wxFrame *frame, const wxString& title)
@@ -22,10 +22,10 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
     // set up the menu bar
-    vSetUpMenuBar();
+    SetUpMenuBar();
 
     // set up the status bar
-    vSetUpStatusBar();
+    SetUpStatusBar();
 
     wxBoxSizer* boxSizer = new wxBoxSizer( wxVERTICAL );
     // create a panel to place all the controls
@@ -37,9 +37,14 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     this->Layout();
     // set default window size
     this->SetSize(300, 150);
+    // Restore settings from previous session
+    RestoreCurrentProgramSettings();
 }
 
-MyFrame::~MyFrame(void) {}
+MyFrame::~MyFrame(void)
+{
+    SaveCurrentProgramSettings();
+}
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
@@ -59,12 +64,12 @@ void MyFrame::OnButton(wxCommandEvent &event)
 {
     switch(event.GetId())
     {
-        /*
-        case SOME_ID:
-        {
-            break;
-        }
-        */
+            /*
+            case SOME_ID:
+            {
+                break;
+            }
+            */
         default:
         {
             // unknown id
@@ -74,7 +79,7 @@ void MyFrame::OnButton(wxCommandEvent &event)
     return;
 }
 
-void MyFrame::vSetUpMenuBar(void)
+void MyFrame::SetUpMenuBar(void)
 {
 #if wxUSE_MENUS
     m_menuBar = new wxMenuBar();
@@ -94,7 +99,7 @@ void MyFrame::vSetUpMenuBar(void)
 #endif // wxUSE_MENUS
 }
 
-void MyFrame::vSetUpStatusBar(void)
+void MyFrame::SetUpStatusBar(void)
 {
 #if wxUSE_STATUSBAR
     // create a status bar with some information about the used wxWidgets version
@@ -102,4 +107,20 @@ void MyFrame::vSetUpStatusBar(void)
     SetStatusText(wxEmptyString, 0);
     SetStatusText(wxVERSION_STRING, 1);
 #endif // wxUSE_STATUSBAR   
+}
+
+void MyFrame::SaveCurrentProgramSettings(void)
+{
+    delete m_config;
+}
+
+void MyFrame::RestoreCurrentProgramSettings(void)
+{
+    m_config = new wxConfig(this->GetTitle());
+    // restore settings
+    wxString currentValue;
+    if( m_config->Read("key", &currentValue) )
+    {
+
+    }
 }
