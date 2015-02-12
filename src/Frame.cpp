@@ -7,9 +7,9 @@
 
 // wxEvent Table
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
-    EVT_MENU(ID_QUIT            , MyFrame::OnQuit)
-    EVT_MENU(ID_ABOUT           , MyFrame::OnAbout)
-    //EVENT_BUTTON(SOME_ID           , MyFrame::OnButton)
+    EVT_MENU(ID_QUIT, MyFrame::OnQuit)
+    EVT_MENU(ID_ABOUT, MyFrame::OnAbout)
+    //EVT_BUTTON(SOME_ID, MyFrame::OnButton)
 END_EVENT_TABLE()
 
 MyFrame::MyFrame(wxFrame *frame, const wxString& title)
