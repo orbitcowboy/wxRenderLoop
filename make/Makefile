@@ -51,13 +51,32 @@ WXCONFIG_CALL = `wx-config --cxxflags --unicode=yes --version=$(WXVERSION)`
 WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,base,html,richtext,xml`
 
 # ----------------------------------------------------------------------
-# To compile with address sanitizer, compile with ASAN=yes
+# Activate all sanitizers at once, use SAN=yes
+ifdef SAN
+	ASAN=yes
+	USAN=yes
+	ifeq (,$(findstring $(CXX),clang++)) # clang specific checks
+       ISAN=yes
+    endif 
+endif 
+# To compile with the address sanitizer, use the option ASAN=yes
 ifdef ASAN
 	SANITIZE=-fsanitize=address 
 endif 
-# To compile with undefined sanitizer, compile with USAN=yes
+# To compile with the undefined sanitizer, use the option  USAN=yes
 ifdef USAN
 	SANITIZE+=-fsanitize=undefined 
+endif
+# To compile with the integer sanitizer, use the option ISAN=yes
+ifdef ISAN
+	SANITIZE+=-fsanitize=integer
+endif
+# To compile with the memory sanitizer, use the option MSAN=yes
+# In order to get detailed stack traces with line numbers, please make sure the llvm-symbolizer is set properly.
+# For example: 
+#  $ export MSAN_SYMBOLIZER_PATH=/home/martin/compiler/clang+llvm-3.6.0-rc2-x86_64-linux-gnu/bin/llvm-symbolizer 
+ifdef MSAN
+	SANITIZE+=-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -fno-optimize-sibling-calls
 endif
 # ----------------------------------------------------------------------
 # C++ compiler settings:
