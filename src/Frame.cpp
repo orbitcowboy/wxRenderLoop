@@ -119,7 +119,7 @@ void MyFrame::RestoreCurrentProgramSettings(void)
     m_config = new wxConfig(this->GetTitle());
     // restore settings
     wxString currentValue;
-    if( m_config->Read("key", &currentValue) )
+    if( m_config->Read(wxT("key"), &currentValue) )
     {
 
     }
