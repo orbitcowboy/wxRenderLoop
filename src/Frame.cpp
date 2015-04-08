@@ -34,7 +34,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     // set the sizer
     this->SetSizer( boxSizer );
     // force layout
-    this->Layout();
+    wxFrame::Layout();
     // set default window size
     this->SetSize(300, 150);
     // Restore settings from previous session
@@ -95,7 +95,7 @@ void MyFrame::SetUpMenuBar(void)
     m_menuBar->Append(m_helpMenu, _("&Help"));
 
     // realize the menu(send it to the window)
-    SetMenuBar(m_menuBar);
+    wxFrame::SetMenuBar(m_menuBar);
 #endif // wxUSE_MENUS
 }
 
@@ -103,9 +103,9 @@ void MyFrame::SetUpStatusBar(void)
 {
 #if wxUSE_STATUSBAR
     // create a status bar with some information about the used wxWidgets version
-    CreateStatusBar(2);
-    SetStatusText(wxEmptyString, 0);
-    SetStatusText(wxVERSION_STRING, 1);
+    wxFrame::CreateStatusBar(2);
+    wxFrame::SetStatusText(wxEmptyString, 0);
+    wxFrame::SetStatusText(wxVERSION_STRING, 1);
 #endif // wxUSE_STATUSBAR   
 }
 
@@ -116,7 +116,7 @@ void MyFrame::SaveCurrentProgramSettings(void)
 
 void MyFrame::RestoreCurrentProgramSettings(void)
 {
-    m_config = new wxConfig(this->GetTitle());
+    m_config = new wxConfig(wxFrame::GetTitle());
     // restore settings
     wxString currentValue;
     if( m_config->Read(wxT("key"), &currentValue) )
