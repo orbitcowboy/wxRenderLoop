@@ -50,7 +50,12 @@ WXVERSION = 3.1
 WXCONFIG_CALL = `wx-config --cxxflags --unicode=yes --version=$(WXVERSION)`
 WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,base,html,richtext,xml`
 
-# ----------------------------------------------------------------------
+# determine g++ version numbers CPP_VERSION = [CPP_MAJOR].[CPP_MINOR].[CPP_SUB] 
+CXX_VERSION = `$(CXX) --version | head -1 | sed -e 's:([^)]*):x:g' |awk -F" " '{ printf $$3 }'`
+CXX_MAJOR   = $(shell echo $(CXX_VERSION) | cut -d'.' -f1)
+CXX_MINOR   = $(shell echo $(CXX_VERSION) | cut -d'.' -f2)
+CXX_SUB     = $(shell echo $(CXX_VERSION) | cut -d'.' -f3)
+
 # Activate all sanitizers at once, use SAN=yes
 ifdef SAN
 	ASAN=yes
@@ -65,7 +70,15 @@ ifdef ASAN
 endif 
 # To compile with the undefined sanitizer, use the option  USAN=yes
 ifdef USAN
-	SANITIZE+=-fsanitize=undefined 
+	SANITIZE+=-fsanitize=undefined
+	ifeq ($(CXX_MAJOR),5)
+		SANITIZE+=-fsanitize=float-divide-by-zero
+    	SANITIZE+=-fsanitize=float-cast-overflow
+    	SANITIZE+=-fsanitize=bounds
+    	SANITIZE+=-fsanitize=alignment
+    	SANITIZE+=-fsanitize=object-size
+    	SANITIZE+=-fsanitize=vptr
+	endif
 endif
 # To compile with the integer sanitizer, use the option ISAN=yes
 ifdef ISAN
