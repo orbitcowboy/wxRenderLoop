@@ -50,11 +50,19 @@ WXVERSION = 3.1
 WXCONFIG_CALL = `wx-config --cxxflags --unicode=yes --version=$(WXVERSION)`
 WXCONFIG_LINKER_CALL = `wx-config --version=$(WXVERSION) --libs adv,aui,core,base,html,richtext,xml`
 
-# determine g++ version numbers CPP_VERSION = [CPP_MAJOR].[CPP_MINOR].[CPP_SUB] 
-CXX_VERSION = `$(CXX) --version | head -1 | sed -e 's:([^)]*):x:g' |awk -F" " '{ printf $$3 }'`
-CXX_MAJOR   = $(shell echo $(CXX_VERSION) | cut -d'.' -f1)
-CXX_MINOR   = $(shell echo $(CXX_VERSION) | cut -d'.' -f2)
-CXX_SUB     = $(shell echo $(CXX_VERSION) | cut -d'.' -f3)
+# Determine g++ version numbers CPP_VERSION = [CPP_MAJOR].[CPP_MINOR].[CPP_SUB] 
+CXX_VERSION      = `$(CXX) --version | head -1 | sed -e 's:([^)]*):x:g' |awk -F" " '{ printf $$3 }'`
+CXX_VERSION_GTE5 = $(shell echo `$(CXX) -dumpversion | cut -f1-2 -d.` \>= 5.0 | sed -e 's/\./*100+/g' | bc )
+CXX_MAJOR        = $(shell echo $(CXX_VERSION) | cut -d'.' -f1)
+CXX_MINOR        = $(shell echo $(CXX_VERSION) | cut -d'.' -f2)
+CXX_SUB          = $(shell echo $(CXX_VERSION) | cut -d'.' -f3)
+
+# Determine gcc version numbers CC_VERSION = [CC_MAJOR].[CC_MINOR].[CC_SUB] 
+CC_VERSION      = `$(CC) --version | head -1 | sed -e 's:([^)]*):x:g' |awk -F" " '{ printf $$3 }'`
+CC_VERSION_GTE5 = $(shell echo `$(CC) -dumpversion | cut -f1-2 -d.` \>= 5.0 | sed -e 's/\./*100+/g' | bc )
+CC_MAJOR        = $(shell echo $(CC_VERSION) | cut -d'.' -f1)
+CC_MINOR        = $(shell echo $(CC_VERSION) | cut -d'.' -f2)
+CC_SUB          = $(shell echo $(CC_VERSION) | cut -d'.' -f3)
 
 # Activate all sanitizers at once, use SAN=yes
 ifdef SAN
@@ -71,7 +79,7 @@ endif
 # To compile with the undefined sanitizer, use the option  USAN=yes
 ifdef USAN
 	SANITIZE+=-fsanitize=undefined
-	ifeq ($(CXX_MAJOR),5)
+	ifeq ($(CXX_VERSION_GTE5),1)
 		SANITIZE+=-fsanitize=float-divide-by-zero
     	SANITIZE+=-fsanitize=float-cast-overflow
     	SANITIZE+=-fsanitize=bounds
@@ -91,6 +99,15 @@ endif
 ifdef MSAN
 	SANITIZE+=-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -fno-optimize-sibling-calls
 endif
+
+# Detect invalid memory access problems (https://gcc.gnu.org/wiki/Intel%20MPX%20support%20in%20the%20GCC%20compiler)
+# This option is available from to GCC-5.xxs. It can be activated by setting PSAN=yes
+ifdef PSAN
+	ifeq ($(CXX_VERSION_GTE5),1)
+		SANITIZE+=-fcheck-pointer-bounds -mmpx -static -static-libmpx 
+    endif 
+endif
+
 # ----------------------------------------------------------------------
 # C++ compiler settings:
 CXX 		= g++
@@ -98,7 +115,10 @@ CXX_INCLUDE	= -I$(SRC_DIR) -I$(SRC_EXT_DIR) -I$(SRC_TEST) -I$(ICON_DIR)
 CXX_OPT		= -O3
 CXX_DEBUG	= $(SANITIZE)
 CXX_WFLAGS	= -Wno-write-strings #-W -Wall -Wunused -Wshadow -Wconversion -Wsign-conversion\
-			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing 
+			  -Wextra -ansi -pedantic -Wno-write-strings -fno-strict-aliasing
+ifeq ($(CXX_VERSION_GTE5),1)
+		CXX_WFLAGS+=-Wswitch-bool -Wlogical-not-parentheses -Wsizeof-array-argument -Wbool-compare
+endif 
 CXXFLAGS 	= $(WXCONFIG_CALL) $(CXX_WFLAGS) $(CXX_DEBUG) $(CXX_INCLUDE) $(CXX_OPT)
 CXX_CALL    = $(CXX) -c $(CXXFLAGS) -o $@ $< 
 
@@ -109,6 +129,9 @@ CC_INCLUDE  =
 CC_DEBUG	= $(SANITIZE)
 CC_OPT      = -O3
 CC_WFLAGS   = -W -Wall -Wunused -Wextra -Wconversion -ansi -pedantic
+ifeq ($(CC_VERSION_GTE5),1)
+		CC_WFLAGS+=-Wswitch-bool -Wlogical-not-parentheses -Wsizeof-array-argument -Wbool-compare
+endif
 CFLAGS 	    = $(WXCONFIG_CALL) -I$(CC_INCLUDE) $(CC_OPT) $(CC_WFLAGS)
 CC_CALL     = $(CC) -c $(CFLAGS) -o $@ $< 
 
