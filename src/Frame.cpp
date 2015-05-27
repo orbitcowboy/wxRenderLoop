@@ -33,6 +33,8 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     boxSizer->Add(m_panel, 1, wxALL | wxEXPAND, 5);
     // set the sizer
     this->SetSizer( boxSizer );
+    // Set default background color
+    wxFrame::SetBackgroundColour(wxColor(235, 235, 235));
     // force layout
     wxFrame::Layout();
     // set default window size
