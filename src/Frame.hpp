@@ -29,6 +29,7 @@ class MyFrame: public wxFrame
 
         // Event handler, which is called when the program terminates.
         void OnQuit   (wxCommandEvent& );
+        void onClose(wxCloseEvent& evt);
         // Event handler, which is called when F1-key is pressed.
         void OnAbout  (wxCommandEvent& );
         // Event handler, which is called when a button is pressed.

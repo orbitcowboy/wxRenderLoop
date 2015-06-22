@@ -3,14 +3,60 @@
 /// @date   2014-12-03
 // --------------------------
 #include "Frame.hpp"
+#include "Application.hpp"
 #include <wx/textdlg.h>
+#include <wx/app.h>
+
+/// The use of IMPLEMENT_APP(appClass), which allows wxWidgets to dynamically create an instance of the application object at the appropriate point in wxWidgets initialization.
+/// Previous versions of wxWidgets used to rely on the creation of a global application object, but this is no longer recommended, because required global initialization may not
+/// have been performed at application object construction time.
+IMPLEMENT_APP(MyApp)
 
 // wxEvent Table
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_MENU(ID_QUIT, MyFrame::OnQuit)
     EVT_MENU(ID_ABOUT, MyFrame::OnAbout)
     //EVT_BUTTON(SOME_ID, MyFrame::OnButton)
+    EVT_CLOSE(MyFrame::onClose)
 END_EVENT_TABLE()
+
+BEGIN_EVENT_TABLE(BasicDrawPane, wxPanel)
+    EVT_PAINT(BasicDrawPane::paintEvent)
+END_EVENT_TABLE()
+
+
+
+BasicDrawPane::BasicDrawPane(wxFrame* parent) :
+    wxPanel(parent)
+{
+}
+
+
+void BasicDrawPane::paintEvent(wxPaintEvent& evt)
+{
+    wxPaintDC dc(this);
+    render(dc);
+}
+
+void BasicDrawPane::paintNow()
+{
+    wxClientDC dc(this);
+    render(dc);
+}
+
+void BasicDrawPane::render( wxDC& dc )
+{
+    static int y = 0;
+    static int y_speed = 2;
+
+    y += y_speed;
+    if(y < 0) y_speed = 2;
+    if(y > 200) y_speed = -2;
+
+    dc.SetBackground( *wxWHITE_BRUSH );
+    dc.Clear();
+    dc.DrawText(wxT("Testing"), 40, y);
+}
 
 MyFrame::MyFrame(wxFrame *frame, const wxString& title)
     : wxFrame(frame, -1, title)
@@ -48,7 +94,13 @@ MyFrame::~MyFrame(void)
     SaveCurrentProgramSettings();
 }
 
-void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
+void MyFrame::onClose(wxCloseEvent& evt)
+{
+    wxGetApp().activateRenderLoop(false);
+    evt.Skip(); // don't stop event, we still want window to close
+}
+
+void MyFrame::OnQuit(wxCommandEvent& event)
 {
     Close();
 }

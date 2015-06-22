@@ -26,7 +26,7 @@ MAKE_DIR 			= ../make
 BIN_DIR 			= ../bin
 CONFIG_DIR			= ../config
 ICON_DIR			= $(SRC_DIR)/image
-APP_NAME			= wxTemplate
+APP_NAME			= wxRenderLoop
 
 # ----------------------------------------------------------------------
 # Determine the number cores of the machine, where the makefile is 
@@ -146,15 +146,13 @@ all: $(BIN_DIR)/$(APP_NAME)
 
 # ----------------------------------------------------------------------
 # Linker rules:
-$(BIN_DIR)/$(APP_NAME) : $(OBJ_DIR)/Application.o\
-						 $(OBJ_DIR)/Frame.o
+$(BIN_DIR)/$(APP_NAME) : $(OBJ_DIR)/wxRenderLoop.o
 	    
 	$(LINKER_CALL)
 
 # ----------------------------------------------------------------------
 # C++ sources:
-SRCS =  $(SRC_DIR)/Application.cpp\
-	    $(SRC_DIR)/Frame.cpp
+SRCS =  $(SRC_DIR)/wxRenderLoop.cpp
 
 # ----------------------------------------------------------------------
 # C sources: 
